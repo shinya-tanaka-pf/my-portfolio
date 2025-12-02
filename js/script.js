@@ -54,12 +54,14 @@ document.addEventListener('DOMContentLoaded', () => {
         changerLeft.classList.add('dark');
         changerRight.classList.remove('dark');
         changerSc.classList.remove('dark');
+        updateUnderline(); 
       });
 
       newPcWhiteBtn?.addEventListener('click', () => {
         changerLeft.classList.remove('dark');
         changerRight.classList.add('dark');
-        changerSc.classList.add('dark'); 
+        changerSc.classList.add('dark');
+        updateUnderline();  
       });
 
     } else {
@@ -67,12 +69,14 @@ document.addEventListener('DOMContentLoaded', () => {
         changerLeft.classList.remove('dark');
         changerRight.classList.remove('dark');
         changerSc.classList.remove('dark');
+        updateUnderline(); 
       });
 
       newSpBlackBtn.addEventListener('click', () => {
         changerLeft.classList.add('dark');
         changerRight.classList.add('dark');
-        changerSc.classList.add('dark'); 
+        changerSc.classList.add('dark');
+        updateUnderline();  
       });
     }
   }
@@ -86,6 +90,43 @@ document.addEventListener('DOMContentLoaded', () => {
     applyInitialMode();
     setButtonEvents();
   });
+  // ===== 下線追加 =====
+  function updateUnderline() {
+    const spWhite = document.querySelector('.go-white');
+    const spBlack = document.querySelector('.go-black');
+    const pcWhite = document.querySelector('.go-white-pc');
+    const pcBlack = document.querySelector('.go-black-pc');
+
+    [spWhite, spBlack, pcWhite, pcBlack].forEach(el => el?.classList.remove('active'));
+
+    // 現在のモードを判定
+    const isDark = changerLeft.classList.contains('dark');
+
+    if (window.matchMedia('(min-width: 768px)').matches) {
+        // PC
+        if (isDark) {
+            pcBlack?.classList.add('active');
+        } else {
+            pcWhite?.classList.add('active');
+        }
+    } else {
+        // SP
+        if (isDark) {
+            spBlack?.classList.add('active');
+        } else {
+            spWhite?.classList.add('active');
+        }
+    }
+  }
+// 初期表示
+updateUnderline();
+// ダークモードボタンに追加
+spWhiteBtn?.addEventListener('click', updateUnderline);
+spBlackBtn?.addEventListener('click', updateUnderline);
+pcWhiteBtn?.addEventListener('click', updateUnderline);
+pcBlackBtn?.addEventListener('click', updateUnderline);
+// PC/SP切替時にも反映
+window.matchMedia('(min-width: 768px)').addEventListener('change', updateUnderline);
 
   // ===== WORKsメニュー =====
   worksItem.addEventListener('click', (e) => {

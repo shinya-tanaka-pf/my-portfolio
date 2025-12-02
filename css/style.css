@@ -14,7 +14,6 @@ body {
 footer{
   padding-bottom:50px;
 }
-
 /*　↓ ダークモード*/
 
 /* --- 初期状態（デフォルト） --- */
@@ -72,7 +71,14 @@ footer{
   background-color: #fff;
 }
 .w-b span{
-  transition: opacity 0.3s;
+  cursor: pointer;
+  font-weight: bold;
+  border-bottom: 2px solid transparent; /* 下線代替 */
+  padding-bottom: 2px;
+  transition: border-color 0.3s;
+}
+.w-b span.active {
+  border-color: currentColor; /* 文字色に同期した下線 */
 }
 .white-black-sp{
   display: flex;
@@ -496,6 +502,9 @@ h2{
 }
 .carousel-item .wid-200 {
   max-height: 200%;    /* 親枠からはみ出さない */
+}
+.carousel-item .wid-w-300 {
+  width: 300%;    /* 親枠からはみ出さない */
 }
 
 .carousel-item video {
