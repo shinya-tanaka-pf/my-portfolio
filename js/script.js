@@ -1,3 +1,8 @@
+function getWorkData(id) {
+  if (!Array.isArray(worksData)) return null;
+  return worksData.find(item => item.id === id);
+}
+
 document.addEventListener('DOMContentLoaded', () => {
 
   const worksItem = document.querySelector('.has-submenu');
@@ -157,7 +162,24 @@ window.matchMedia('(min-width: 768px)').addEventListener('change', updateUnderli
   //スクロールボタン
   const sections = document.querySelectorAll('.section-top');
   const scrollBtn = document.querySelector('.nextpage');
-  let currentIndex = 0;
+  //let currentIndex = 0;
+//   function initCarousel(dialog, mediaLength) {
+//   let currentIndex = 0;
+
+//   const prev = dialog.querySelector('.carousel-btn.prev');
+//   const next = dialog.querySelector('.carousel-btn.next');
+//   const track = dialog.querySelector('[data-carousel-track]');
+
+//   prev.onclick = () => move(-1);
+//   next.onclick = () => move(1);
+
+//   function move(dir) {
+//     currentIndex = (currentIndex + dir + mediaLength) % mediaLength;
+//     track.style.transform = `translateX(-${currentIndex * 100}%)`;
+//     updateCarouselIndex(dialog, currentIndex, mediaLength);
+//   }
+// }
+
 
   scrollBtn.addEventListener('click', () => {
     currentIndex++;
@@ -238,46 +260,372 @@ document.querySelectorAll('.submenu a').forEach(a => {
   applyFilter('all');
 })();
 
-});
-
 /* dialogによるモーダル */
-document.querySelectorAll('.w-item').forEach(item => {
+// function buildModal(dialog, data) {
+//   /* ===== タイトル ===== */
+//   dialog.querySelector('[data-modal-title]').textContent = data.title;
+//   /* ===== ページネーション ===== */
+//   dialog.querySelector('[data-carousel-index]').textContent =
+//   `${current + 1} / ${total}`;
+//   /* ===== カルーセル ===== */
+//   const track = dialog.querySelector('[data-carousel-track]');
+//   track.innerHTML = '';
 
-    const dialog   = item.querySelector('.myDialog');
+//   data.media.forEach(media => {
+//     const item = document.createElement('div');
+//     item.className = 'carousel-item';
+
+//     if (media.type === 'image') {
+//       const img = document.createElement('img');
+//       img.src = media.src;
+//       if (media.class) img.className = media.class;
+//       item.appendChild(img);
+//     }
+
+//     if (media.type === 'video') {
+//       item.appendChild(createVideo(media));
+//     }
+
+//     track.appendChild(item);
+//   });
+
+//   function updateSlides() {
+//     return dialog.querySelectorAll('.carousel-item');
+//   }
+
+//   /* ===== テキスト ===== */
+//   const texts = dialog.querySelector('[data-modal-texts]');
+//   texts.innerHTML = `
+//     <div class="modal-text-child"><p>使用ツール：${data.tools}</p></div>
+//     <div class="modal-text-child"><p>制作期間：${data.period}</p></div>
+//     <div class="modal-text-child"><p>${data.description}</p></div>
+//   `;
+//   initCarousel(dialog, data.media.length);
+// }
+
+document.querySelectorAll('.w-item').forEach(item => {
+  const id = item.dataset.workId;
+  const data = getWorkData(id);
+
+  console.log('workId:', id);
+  console.log('workData:', data);
+
+  if (!data) return;
+
+  /* サムネ画像 */
+  const img = item.querySelector('img[data-thumb-src]');
+  if (img) {
+    img.src = data.thumb;
+    img.alt = data.title;
+  }
+
+  /* hoverタイトル */
+  const titleEl = item.querySelector('[data-thumb-title]');
+  if (titleEl) {
+    titleEl.textContent = data.title;
+  }
+  
+  /* category（念のため同期） */
+  item.dataset.category = data.category;
+
+
+    const dialog   = item.querySelector('.mydialog');
     const openBtn  = item.querySelector('.openButton');
     const closeBtn = item.querySelector('.closeButton');
 
-    const track = dialog.querySelector('.carousel-track');
-    const slides = dialog.querySelectorAll('.carousel-item');
-    const prev = dialog.querySelector('.prev');
-    const next = dialog.querySelector('.next');
-    const indexText = dialog.querySelector('.carousel-index');
+    // const track = dialog.querySelector('.carousel-track');
+    // let slides = dialog.querySelectorAll('.carousel-item');
+    // const prev = dialog.querySelector('.prev');
+    // const next = dialog.querySelector('.next');
+    // const indexText = dialog.querySelector('.carousel-index');
 
-    let current = 0;
+    // let current = 0;
+
+//     function updateCarousel(dialog) {
+//   const track = dialog.querySelector('[data-carousel-track]');
+//   const slides = dialog.querySelectorAll('.carousel-item');
+//   const index = dialog.querySelector('[data-carousel-index]');
+
+//   track.style.transform = `translateX(-${current * 100}%)`;
+//   index.textContent = `${current + 1} / ${slides.length}`;
+// }
+// prev.onclick = () => {
+//   current = (current - 1 + slides.length) % slides.length;
+//   updateCarousel(dialog);
+// };
+
+// next.onclick = () => {
+//   current = (current + 1) % slides.length;
+//   updateCarousel(dialog);
+// };
+
+// function buildModal(dialog, data) {
+//   /* ===== タイトル ===== */
+//   dialog.querySelector('[data-modal-title]').textContent = data.title;
+
+//   /* ===== カルーセル ===== */
+//   const track = dialog.querySelector('[data-carousel-track]');
+//   track.innerHTML = '';
+
+//   data.media.forEach(media => {
+//     const item = document.createElement('div');
+//     item.className = 'carousel-item';
+
+//     if (media.type === 'image') {
+//       const img = document.createElement('img');
+//       img.src = media.src;
+//       if (media.class) img.className = media.class;
+//       item.appendChild(img);
+//     }
+
+//     if (media.type === 'video') {
+//       item.appendChild(createVideo(media));
+//     }
+
+//     track.appendChild(item);
+//   });
+
+//   /* ===== テキスト ===== */
+//   const texts = dialog.querySelector('[data-modal-texts]');
+//   texts.innerHTML = `
+//     <div class="modal-text-child"><p>使用ツール：${data.tools}</p></div>
+//     <div class="modal-text-child"><p>制作期間：${data.period}</p></div>
+//     <div class="modal-text-child"><p>${data.description}</p></div>
+//   `;
+//     /* ===== カルーセル初期化（重要） ===== */
+//   track.style.transform = 'translateX(0)';
+//   track.dataset.index = '0';
+
+//   const indexEl = dialog.querySelector('[data-carousel-index]');
+//   if (indexEl) {
+//     indexEl.textContent = `1 / ${data.media.length}`;
+//   }
+// }
+/* ===== ユーティリティ ===== */
+function linkify(text) {
+  return text
+    // [[URL]] だけをリンク化
+    .replace(
+      /\[\[(https?:\/\/[^\]]+)\]\]/g,
+      '<a href="$1" target="_blank" rel="noopener">$1</a>'
+    )
+    // 改行を <br> に変換
+    .replace(/\n/g, '<br>');
+}
+
+/* ===== モーダル生成 ===== */
+function buildModal(dialog, data) {
+  dialog.querySelector('[data-modal-title]').textContent = data.title;
+
+  const track = dialog.querySelector('[data-carousel-track]');
+  track.innerHTML = '';
+
+  data.media.forEach(media => {
+    const item = document.createElement('div');
+    item.className = 'carousel-item';
+
+    if (media.type === 'image') {
+      const img = document.createElement('img');
+      img.src = media.src;
+      if (media.class) img.className = media.class;
+      item.appendChild(img);
+    }
+
+    if (media.type === 'video') {
+      item.appendChild(createVideo(media));
+    }
+
+    track.appendChild(item);
+  });
+  // track.offsetHeight;
+
+  // dialog.querySelector('[data-modal-texts]').innerHTML = `
+  //   <div class="modal-text-child"><p>使用ツール：${data.tools}</p></div>
+  //   <div class="modal-text-child"><p>制作期間：${data.period}</p></div>
+  //   <div class="modal-text-child"><p>${data.description}</p></div>
+  // `;
+//worksdataの文章用
+//\nで改行
+//[[]]で囲めばリンク化
+  let descHtml = data.description
+    .replace(/\n/g, '<br>')
+    .replace(
+      /(https?:\/\/[^\s<]+)/g,
+      '<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
+    );
+
+dialog.querySelector('[data-modal-texts]').innerHTML = `
+  <div class="modal-text-child"><p>使用ツール：${data.tools}</p></div>
+  <div class="modal-text-child"><p>制作期間：${data.period}</p></div>
+  <div class="modal-text-child">
+    <p>${linkify(data.description)}</p>
+  </div>
+`;
+
+}
+
+
+
+    /* ===== 動画リセット ===== */
+    function resetVideo(slide){
+      const video = slide.querySelector('video');
+      const overlay = slide.querySelector('.video-overlay');
+      const sound = slide.querySelector('.video-sound');
+
+      if (!video) return;
+
+      video.pause();
+      video.currentTime = 0;
+      video.muted = true;
+
+      overlay?.classList.remove('hidden');
+      if (sound) sound.textContent = 'unmute';
+    }
 
     /** カルーセル更新 **/
     function updateCarousel() {
+        if (!slides.length) return;
         track.style.transform = `translateX(-${current * 100}%)`;
         indexText.textContent = `${current + 1} / ${slides.length}`;
     }
 
     /** スライドボタン **/
-    prev.addEventListener('click', () => {
-        current = (current - 1 + slides.length) % slides.length;
-        updateCarousel();
-    });
+    //  prev.addEventListener('click', () => {
+    //     //  current = (current - 1 + slides.length) % slides.length;
+    //     //  updateCarousel();
+    //     resetVideo(slides[current]);
+    //     current = (current - 1 + slides.length) % slides.length;
+    //     updateCarousel();
+    //  });
 
-    next.addEventListener('click', () => {
-        current = (current + 1) % slides.length;
-        updateCarousel();
-    });
+    // next.addEventListener('click', () => {
+    //     // current = (current + 1) % slides.length;
+    //     // updateCarousel();
+    //     resetVideo(slides[current]);
+    //     current = (current + 1) % slides.length;
+    //     updateCarousel();
+    // });
 
     /** モーダル **/
-    openBtn.addEventListener('click', () => {
-        dialog.showModal();
-        current = 0;
-        updateCarousel();
-    });
+    // openBtn.addEventListener('click', () => {
+    //     // dialog.showModal();
+    //     // current = 0;
+    //     // updateCarousel();
+    //     buildModal(dialog, data);   // ← ★これが必須
+    //     dialog.showModal();
+      
+    //     current = 0;
+
+    //     slides = dialog.querySelectorAll('.carousel-item');
+
+    //     updateCarousel();
+    // });
+    
+function initCarousel(dialog) {
+  const track = dialog.querySelector('[data-carousel-track]');
+  const slides = dialog.querySelectorAll('.carousel-item');
+  const indexText = dialog.querySelector('.carousel-index');
+  const prev = dialog.querySelector('.prev');
+  const next = dialog.querySelector('.next');
+
+  let current = 0;
+
+  function updateCarousel() {
+    track.style.transform = `translateX(-${current * 100}%)`;
+    indexText.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  updateCarousel();
+
+  prev.onclick = () => {
+    current = (current - 1 + slides.length) % slides.length;
+    updateCarousel();
+  };
+
+  next.onclick = () => {
+    current = (current + 1) % slides.length;
+    updateCarousel();
+  };
+}
+
+
+openBtn.addEventListener('click', () => {
+  buildModal(dialog, data);
+  dialog.showModal();
+
+  const track = dialog.querySelector('[data-carousel-track]');
+  const prev = dialog.querySelector('.prev');
+  const next = dialog.querySelector('.next');
+  const indexText = dialog.querySelector('[data-carousel-index]');
+  let slides = dialog.querySelectorAll('.carousel-item');
+  let current = 0;
+
+  function updateCarousel() {
+    if (!slides.length) return;
+    track.style.transform = `translateX(-${current * 100}%)`;
+    indexText.textContent = `${current + 1} / ${slides.length}`;
+  }
+
+  prev.onclick = () => {
+    current = (current - 1 + slides.length) % slides.length;
+    updateCarousel();
+  };
+
+  next.onclick = () => {
+    current = (current + 1) % slides.length;
+    updateCarousel();
+  };
+
+  // ★ 描画が終わるのを1フレーム待つ
+  requestAnimationFrame(() => {
+    initCarousel(dialog);
+  });
+
+});
+
+
+
+
 
     closeBtn.addEventListener('click', () => dialog.close());
+
+    function createVideo(media) {
+      const wrap = document.createElement('div');
+      wrap.className = 'video-wrap';
+
+      const video = document.createElement('video');
+      video.src = media.src;
+      video.controls = true;
+      video.preload = 'metadata';
+      video.playsInline = true;
+
+      const label = document.createElement('div');
+      label.className = 'video-label';
+      label.textContent = media.label || '';
+
+      wrap.append(video, label);
+
+      video.addEventListener('play', () => {
+        label.classList.add('hidden');
+      });
+
+      video.addEventListener('pause', () => {
+        if (video.currentTime === 0) {
+          label.classList.remove('hidden');
+        }
+      });
+
+      video.addEventListener('ended', () => {
+        video.currentTime = 0;
+        label.classList.remove('hidden');
+      });
+
+      return wrap;
+    }
+
+
+
+});
+
+
 });

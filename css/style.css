@@ -392,25 +392,42 @@ h2{
   pointer-events: none;
 }
 /*モーダル部分*/
-.myDialog {
-  width: 90vw;
-  height: auto;
-  border: none;
-  overflow-y: visible;
+.mydialog {
+  border: none;  
+  width: 95vw;
+  height: 95vh;
   padding: 0;
+  overflow: hidden;
+  /* overflow-y: visible;
+  padding: 1rem 1.5rem 1.5rem 1.5rem; */
 }
 .modal-content {
+  position: relative;
   width: 100%;
-  height: auto;
+  height: 100%;
   background: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow: hidden;
+  /* overflow: hidden; */
+  padding: 1rem;
+  overflow-y: auto; 
+  outline: none;/* ※起動時に不要な枠の出現を防ぐため */
+}
+.modal-content-section{
+  display: flex;
+  width: 100%;
+  padding-top: 1rem;
+  flex: 1 1 auto;
+  flex-direction: column;
+}
+.modal-view{
+  width: 100%;
+  /* flex: 0 0 55%; */
 }
 .modal-text-child {
   padding-top: 1rem;
-  border-bottom: 1px solid #000;
+  border-bottom: 1px solid #C2C2C2;
   text-align: left;
 }
 .modal-text-child:nth-child(3) {
@@ -456,18 +473,32 @@ h2{
 
 /* タイトル */
 .modal-title {
-    margin-top: 16px;
-    font-size: 1.4rem;
-    font-weight: bold;
+  flex: 0 0 auto;
+  width: 100%;
+  border-bottom: solid 1px #000;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+
+}
+.modal-title h2{
+    /* margin-top: 13px; */
+    line-height: 1.6;
+    font-size: 1rem;
+    font-weight:400;
     text-align: center;
+    margin-bottom:0.5rem;
+    margin-top: 0;
+    /* margin-left:0rem; */
 }
 /* カルーセル */
 .carousel {
-    width: 80%;
-    aspect-ratio: 2 / 1;
+    width: 100%;
+    height: 25vh;
+    /* aspect-ratio: 2 / 1; */
     background: #ccc;
     position: relative;
-    margin: 0 auto;
+    /*margin: 0 1rem 0 0;*/
     overflow: hidden;
 }
 /* 画像を横に並べるレーン */
@@ -475,10 +506,13 @@ h2{
     display: flex;
     width: 100%;
     height: 100%;
-    transition: transform .4s ease;
+    flex-direction: row;   /* ← 明示する（重要） */
+    flex-wrap: nowrap;     /* ← 折り返し禁止 */
+    transition: transform .3s ease;
 }
 /* 1枚の画像スライド */
 .carousel-item {
+    width:100%;
     flex: 0 0 100%;
     position: relative;
     display: flex;
@@ -494,6 +528,9 @@ h2{
     display: block;
     padding: 10px;
 }
+.carousel-item .wid-100 {
+  max-height: 100%;    /* 親枠からはみ出さない */
+}
 .carousel-item .wid-125 {
   max-height: 125%;    /* 親枠からはみ出さない */
 }
@@ -506,36 +543,62 @@ h2{
 .carousel-item .wid-w-300 {
   width: 300%;    /* 親枠からはみ出さない */
 }
-
 .carousel-item video {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 .carousel-item.active {
-    display: block;
+  display: block;
 }
 .carousel-btn {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10;
-    background: rgba(0,0,0,.5);
-    color: #fff;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
+  position: absolute;
+  top: 0.4rem;
+  /* transform: translateY(-30%); */
+  /* z-index: 10; */
+  background: none;
+  /* color: #fff; */
+  border: none;
+  outline: none;/* ※起動時に不要な枠の出現を防ぐため */
+  /* padding: 10px; */
+  cursor: pointer;
+  margin-top: 0.25rem;
 }
-.carousel-btn.prev { left: 10px; }
-.carousel-btn.next { right: 10px; }
+.carousel-inner{
+  position:relative;
+  display:flex;
+  width: 95%;
+  /* justify-items: center; */
+  justify-content: center;
+  /* margin: 0 auto; */
+}
+.carousel-btn.prev {
+  left: 20%;
+}
+.carousel-btn.next {
+  right: 20%;
+}
 /* ページ番号 */
 .carousel-index {
-  margin-top: 10px;
+  display: block;
+  color: #000;
+  font-size: 0.9rem;
+  font-weight: 400;
+  width:100%;
+  margin-top: 0.7rem;
+  text-align: center;
 }
 .modal-texts {
-  width: 80%;
+  width: 100%;
   height: auto;
-  overflow-y: auto;
+  /* overflow-y: auto; */
+  overflow: hidden;
+  font-weight: 400;
+  flex: 1 1 auto;
+}
+.modal-texts a {
+  color: #1a73e8;
+  text-decoration: underline;
 }
 /* 複数項目文章 */
 .modal-texts p {
@@ -547,15 +610,17 @@ h2{
   position: absolute;
   width: 30px;
   height: 30px;
-  top: 20px;
-  left: 20px;
+  /* top: 20px;
+  left: 20px; */
+  top: 1rem;
+  left: 1rem;
 }
  
 .closeButton::before, .closeButton::after { /* 共通設定 */
   content: "";
   position: fixed;
   top: 7%;
-  left: 7%;
+  /*left: 7%;*/
   width: 1px; /* 棒の幅（太さ） */
   height: 30px; /* 棒の高さ */
   background: #333;
@@ -568,6 +633,53 @@ h2{
 .closeButton::after {
   transform: translate(-50%,-50%) rotate(-45deg);
 }
+
+/** モーダル動画部分 **/
+.video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.video-wrap video {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+  display: block;
+}
+/* オーバーレイ */
+/* videoラッパー */
+.video-wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+}
+
+/* video本体 */
+.video-wrap video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* 初期ラベル（黒画面＋白文字） */
+.video-label {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  color: #fff;
+  font-size: 0.9rem;
+  background: #000;
+  pointer-events: none; /* 操作は video に通す */
+}
+.video-label.hidden {
+  display: none;
+}
+/** モーダル動画部分以上 **/
 /*モーダル部分以上*/
 
 /* レスポンシブ */
@@ -626,5 +738,46 @@ h2{
   /*　↑　ダークモード*/
   .footer-menu nav ul{
     width: 25vw;
+  }
+  /*モーダル部分*/
+  .modal-content-section{
+    display: flex;
+    flex-direction: row;
+    flex: 1 1 auto;
+    gap: 24px;
+    /* padding: 1.5rem; */
+    box-sizing: border-box;
+  }
+  /* タイトル */
+  .modal-title {
+    text-align: left;
+    flex: 0 0 auto;
+  }
+  .modal-title h2{
+    font-size: 1.4rem;
+    /* margin-left:2rem; */
+  }
+  /* カルーセル */
+  .carousel {
+    width: 95%;
+    height: 78vh;
+  }
+  /* 画像を横に並べるレーン */
+  .carousel-track {
+    height: 100%;
+  }
+  .carousel-btn.prev {
+    left: 40%;
+  }
+  .carousel-btn.next {
+    right: 40%;
+  }
+  .modal-texts {
+    width: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .modal-texts {
+    overflow-y: auto;
   }
 }
