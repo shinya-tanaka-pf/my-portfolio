@@ -140,7 +140,6 @@ const worksData = [
         { type: 'image', src: 'image/web-banner/banner-ny488/ny488-8.jpg', class: 'wid-100' },
         { type: 'image', src: 'image/web-banner/banner-ny488/ny488-9.jpg', class: 'wid-100' },
         { type: 'image', src: 'image/web-banner/banner-ny488/ny488-10.jpg', class: 'wid-100' },
-        { type: 'image', src: 'image/web-banner/banner-ny488/ny488-11.jpg', class: 'wid-100' },
         { type: 'image', src: 'image/web-banner/banner-ny488/ny488-12.jpg', class: 'wid-100' },
       ],
       tools: 'Photoshop',
